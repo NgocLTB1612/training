@@ -15,4 +15,7 @@ import com.bookpack.jpamethod.CagResponse;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
+    @Query("SELECT c FROM Category c WHERE c.cag_name LIKE %?1%")
+    List<Category> search(String keyword);
+
 }

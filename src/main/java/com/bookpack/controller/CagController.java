@@ -5,12 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bookpack.entity.Book;
 import com.bookpack.entity.Category;
@@ -21,7 +16,7 @@ import com.bookpack.repository.CategoryRepository;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class CagController {
 
@@ -33,30 +28,39 @@ public class CagController {
 	private BookRepository bookRepository;
 
 	//Save Categories 
-	@PostMapping("/saveCag")
+	@PostMapping("/cag")
 	public Category saveCag(@RequestBody CagRequest request) {
 		return categoryRepository.save(request.getCategory());
 	}
 	
 	//Find Categories by CID
-	@GetMapping("/findCag/{cid}")
+	@GetMapping("/cag/{cid}")
 	public Optional<Category> findCag(@PathVariable int cid) {
 		return categoryRepository.findById(cid);
 	}
 	
-	@GetMapping("/findCag")
+	@GetMapping("/cag")
 	public List<Category> findCag() {
 		return categoryRepository.findAll();
 	}
 	
 	//Update Categories by CID
-	@PutMapping("/updateCag/{cid}")
+	@PutMapping("/cag/{cid}")
 	public Category updateCag(@RequestBody Category category) {
 		return categoryRepository.save(category);
 	}
-	
-	
-	
 
+	//search by cag_name
+	@RequestMapping("/searchCag")
+	public List<Category> listAll(String keyword) {
+		if (keyword == null) {
+			return categoryRepository.findAll();
+		}
+		if (keyword != null) {
+
+			return categoryRepository.search(keyword);
+		}
+		return categoryRepository.findAll();
+	}
 
 }

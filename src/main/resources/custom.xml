@@ -1,0 +1,9 @@
+<http use-expressions="true">
+    <intercept-url pattern="/**" access="isAuthenticated()"/>
+    <http-basic/>
+</http>
+
+<authentication-manager>
+<authentication-provider
+        ref="customAuthenticationProvider" />
+</authentication-manager>

@@ -1,37 +1,27 @@
 package com.bookpack.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.bookpack.audit.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table( name = "book")
-public class Book extends Auditable<String>{
+public class Book extends Auditable<String> {
 	
-	public int getBid() {
-		return bid;
-	}
-	public void setBid(int bid) {
-		this.bid = bid;
-	}
-	public String getBookName() {
-		return bookName;
-	}
-	public void setBookName(String bookName) {
-		this.bookName = bookName;
-	}
+
 	@Id
 	@GeneratedValue (strategy= GenerationType.AUTO)
 	private int bid;
+	@Column(nullable = false)
+	private String publisherName;
+	@Column(nullable = false)
+	private String authorName;
+	@Column(nullable = false)
 	private String bookName;
 	public String getPublisherName() {
 		return publisherName;
@@ -45,8 +35,18 @@ public class Book extends Auditable<String>{
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
 	}
-	private String publisherName;
-	private String authorName;
+	public int getBid() {
+		return bid;
+	}
+	public void setBid(int bid) {
+		this.bid = bid;
+	}
+	public String getBookName() {
+		return bookName;
+	}
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
 	
 	@JsonIgnoreProperties({"books"})
 	@ManyToOne

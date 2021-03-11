@@ -1,9 +1,5 @@
 package com.bookpack.entity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 import lombok.Data;
@@ -15,6 +11,37 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+
+	@Column( name = "username")
+	private String username;
+
+	@Column( name = "email")
+	private String email;
+
+	@Column( name = "password")
+	private String password;
+
+	public User(){
+	}
+
+	public User(int id, String username, String email, String password) {
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}
@@ -22,10 +49,10 @@ public class User {
 		this.id = id;
 	}
 	public String getUserName() {
-		return userName;
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 	public String getEmail() {
 		return email;
@@ -33,7 +60,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	private String userName;
-	private String email;
+
+
 
 }
