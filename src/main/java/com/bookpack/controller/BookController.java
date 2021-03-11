@@ -21,6 +21,7 @@ import com.bookpack.repository.BookRepository;
 import net.bytebuddy.asm.Advice.OffsetMapping.Sort;
 
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api")
 @RestController
 public class BookController {
 

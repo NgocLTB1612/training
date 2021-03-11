@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api")
 @RestController
 public class CagController {
 
