@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.bookpack.entity.User;
 import com.bookpack.repository.UserRepository;
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api")
 @RestController
 public class UserController {
 	@Autowired
