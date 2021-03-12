@@ -49,7 +49,7 @@ public class Book extends Auditable<String> {
 	}
 	
 	@JsonIgnoreProperties({"books"})
-	@ManyToOne
+	@ManyToOne(targetEntity = Category.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "cag_id")
 	private Category category;
 	public Category getCategory() {
@@ -58,6 +58,5 @@ public class Book extends Auditable<String> {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
 
 }

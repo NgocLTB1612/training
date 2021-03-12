@@ -2,12 +2,13 @@ package com.bookpack.entity;
 import javax.persistence.*;
 
 
+import com.bookpack.audit.Auditable;
 import lombok.Data;
 
 @Data
 @Entity
 @Table( name = "user")
-public class User {
+public class User extends Auditable<String> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -31,7 +32,6 @@ public class User {
 		this.password = password;
 	}
 
-
 	public String getPassword() {
 		return password;
 	}
@@ -39,8 +39,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -60,7 +58,5 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
 
 }

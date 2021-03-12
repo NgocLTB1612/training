@@ -1,6 +1,7 @@
 package com.bookpack.controller;
 
 import com.bookpack.entity.AuthRequest;
+import com.bookpack.entity.LoggedUser;
 import com.bookpack.entity.LoginResponse;
 import com.bookpack.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class WelcomeController {
     }
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
-    public String currentUserName(Principal principal) {
-        return principal.getName();
+    public LoggedUser currentUserName(Principal principal) {
+        return new LoggedUser(principal.getName());
     }
 
 }

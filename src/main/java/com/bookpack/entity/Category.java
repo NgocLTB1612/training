@@ -7,6 +7,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
@@ -18,12 +19,13 @@ public class Category {
 	@GeneratedValue
 	private int cid;
 
-	@Column(nullable = false)
+	@Column(name = "cag_name")
 	private String cag_name;
 
 	@OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "cag_id", referencedColumnName = "cid")
 	private List<Book> books;
+
 
 	public int getCid() {
 		return cid;

@@ -2,6 +2,8 @@ package com.bookpack;
 
 import com.bookpack.audit.SpringSecurityAuditorAware;
 import com.bookpack.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 
@@ -18,12 +20,15 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.bookpack.entity.Book;
 import com.bookpack.entity.Category;
 import com.bookpack.entity.User;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -36,10 +41,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackageClasses = Book.class)
 @ComponentScan(basePackageClasses = Category.class)
 @ComponentScan(basePackageClasses = User.class)
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class Bmp1Application implements CommandLineRunner {
 
     @Bean
-
     public AuditorAware<String> auditorAware() {
 
         return new SpringSecurityAuditorAware();
@@ -97,15 +102,14 @@ public class Bmp1Application implements CommandLineRunner {
             System.out.println(user);
         }
     }
-	/*	@PostConstruct
-	public void initUsers(){
-		List<User> users = Stream.of(
-				new User(102, "user1", "user1@gmail.com", "123456"),
-				new User(103, "user2", "user2@gmail.com", "123456"),
-				new User(104, "user3", "user3@gmail.com", "123456")
-		).collect(Collectors.toList());
-		userRepository.saveAll(users);
-	}*/
+
+    @Bean
+    @Primary
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
+        ObjectMapper objectMapper = builder.build();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
+    }
 
 
 }
