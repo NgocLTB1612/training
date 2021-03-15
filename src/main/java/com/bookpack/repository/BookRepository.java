@@ -1,8 +1,6 @@
 package com.bookpack.repository;
 import java.util.List;
 
-import com.bookpack.jpamethod.BookByBookName;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,21 +29,18 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	@Query(value = "select new com.bookpack.jpamethod.BookCustomRes2(b.bookName,c.cag_name) from Book b left join Category c on b.category.cid = c.cid")
 	List<BookCustomRes2> findBook3();
 
-	@Query("SELECT b FROM Book b WHERE b.bookName LIKE %?1%"
-			+ " OR b.authorName LIKE %?1%"
-			+ " OR b.publisherName LIKE %?1%")
-	List<Book> search(String keyword);
+	@Query("SELECT b FROM Book b WHERE b.bookName LIKE %:bookName%"
+			+ " AND b.authorName LIKE %:authorName%"
+			+ " AND b.publisherName LIKE %:publisherName%"
+			+ " AND b.category.cag_name LIKE %:cag_name%")
+	List<Book> findBookBy(String bookName, String authorName, String publisherName, String cag_name);
 
 	//Pagination
 	@Query("SELECT b FROM Book b WHERE b.category.cag_name LIKE %?1%")
     List<Book> findByCategoryName(String keyword);
 
-
-
-
-
-
-
+	@Query("SELECT b FROM Book b ORDER BY b.lastModifiedDate DESC")
+	public List<Book> findAllByOrderByDateDesc();
 
 
 }

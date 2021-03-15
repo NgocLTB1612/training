@@ -58,7 +58,9 @@ public class Bmp1Application implements CommandLineRunner {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins("http://localhost:4200")
                         .allowedMethods("/*")
+                        .allowedMethods("POST, GET, OPTIONS")
                         .allowedHeaders("Access-Control-Allow-Origin")
+                        .allowedMethods("POST, GET, OPTIONS")
                         .exposedHeaders("Access-Control-Allow-Origin")
                         .allowCredentials(false).maxAge(3600);;;
             }

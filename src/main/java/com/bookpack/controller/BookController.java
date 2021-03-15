@@ -1,5 +1,6 @@
 package com.bookpack.controller;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import com.bookpack.jpamethod.BookByBookName;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,6 @@ import com.bookpack.entity.Book;
 import com.bookpack.jpamethod.BookCustomRes;
 import com.bookpack.jpamethod.BookCustomRes2;
 import com.bookpack.repository.BookRepository;
-
-import net.bytebuddy.asm.Advice.OffsetMapping.Sort;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -64,9 +64,9 @@ public class BookController {
 		return bookRepository.save(book);
 	}
 
-	@PostMapping("/books")
-	public List<Book> saveAll(@RequestBody List<Book> books) {
-		return bookRepository.saveAll(books);
+	@GetMapping("/books")
+	public List<Book> findAll() {
+		return bookRepository.findAllByOrderByDateDesc();
 	}
 
 	@GetMapping("/book/{bid}")
@@ -93,28 +93,17 @@ public class BookController {
 
 	}
 
-	@RequestMapping("/search")
-	public List<Book> listAll(String keyword) {
-		if (keyword == null) {
-			return bookRepository.findAll();
-		}
-		if (keyword != null) {
 
-			return bookRepository.search(keyword);
-		}
-		return bookRepository.findAll();
-	}
 //Pagination
 	@GetMapping("/book")
 	public ResponseEntity<Map<String, Object>> findAll(
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "15") int size
+			@RequestParam(defaultValue = "4") int size
 	) {
 
 		try {
 			List<Book> books = new ArrayList<>();
-			Pageable paging = PageRequest.of(page, size);
-
+			Pageable paging = PageRequest.of(page, size, Sort.by("lastModifiedDate").descending());
 			Page<Book> pageTuts;
 				pageTuts = bookRepository.findAll(paging);
 
@@ -132,16 +121,19 @@ public class BookController {
 		}
 	}
 
-	@RequestMapping("/searchByCagname")
-	public List<Book> search(String keyword) {
-		if (keyword == null) {
-			return bookRepository.findAll();
-		}
-		if (keyword != null) {
+	//Search
+	@RequestMapping("/search")
+	public ResponseEntity<List<Book>> findAll(
+										 @RequestParam("bookName") String bookName,
+										 @RequestParam("authorName") String authorName,
+										 @RequestParam("publisherName") String publisherName,
+										 @RequestParam("cag_name") String cag_name
+							  )
+	{
+		List<Book> books= bookRepository.findBookBy(bookName,authorName, publisherName, cag_name);
 
-			return bookRepository.findByCategoryName(keyword);
-		}
-		return bookRepository.findAll();
+		return new ResponseEntity<>(books, HttpStatus.OK);
+
 	}
 
 

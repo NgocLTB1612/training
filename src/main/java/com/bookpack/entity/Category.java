@@ -19,7 +19,7 @@ public class Category {
 	@GeneratedValue
 	private int cid;
 
-	@Column(name = "cag_name")
+	@Column(name = "cag_name", unique=true)
 	private String cag_name;
 
 	@OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
