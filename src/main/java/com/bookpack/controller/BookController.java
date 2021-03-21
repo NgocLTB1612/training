@@ -3,6 +3,8 @@ package com.bookpack.controller;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import com.bookpack.entity.MessageResponse;
+import com.bookpack.entity.User;
 import com.bookpack.jpamethod.BookByBookName;
 import com.bookpack.repository.BookByName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +61,20 @@ public class BookController {
 	}
 
 
+//	@PostMapping("/book")
+//	public Book save(@RequestBody Book book)  {
+//		return bookRepository.save(book);
+//	}
+
 	@PostMapping("/book")
-	public Book save(@RequestBody Book book) {
-		return bookRepository.save(book);
+	public ResponseEntity<?> save(@RequestBody Book book ) {
+		if (bookRepository.existsByBookName(book.getBookName())) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: bookname is already taken"));
+		}
+		bookRepository.save(book);
+		return ResponseEntity.ok(new MessageResponse("Added successfully"));
 	}
 
 	@GetMapping("/books")
@@ -98,7 +111,7 @@ public class BookController {
 	@GetMapping("/book")
 	public ResponseEntity<Map<String, Object>> findAll(
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "4") int size
+			@RequestParam(defaultValue = "8") int size
 	) {
 
 		try {

@@ -98,7 +98,7 @@ public class Bmp1Application implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (userRepository.findByUsername("linh") == null) {
             User user = new User();
-            user.setUserName("Linh");
+            user.setUsername("Linh");
             user.setPassword(passwordEncoder.encode("12345678"));
             userRepository.save(user);
             System.out.println(user);

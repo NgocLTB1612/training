@@ -13,6 +13,7 @@ import com.bookpack.jpamethod.BookCustomRes2;
 @CrossOrigin(origins = "http://localhost:4200")
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
+	Boolean existsByBookName(String bookName);
 
 	// Derived Query Methods in Spring Data JPA Repositories
 	List<Book> findAllByOrderByBookNameAsc();
@@ -42,5 +43,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	@Query("SELECT b FROM Book b ORDER BY b.lastModifiedDate DESC")
 	public List<Book> findAllByOrderByDateDesc();
 
-
+	@Query("SELECT b FROM Book b ORDER BY b.bookName")
+	Book findBookBy(String tempBookName);
 }
